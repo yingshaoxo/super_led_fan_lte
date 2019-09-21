@@ -60,10 +60,12 @@ kernel = [-2, -1,  0, \
 
 def image_processing(img):
     img.lens_corr(lens_correct_ratio)
+
     img.morph(kernel_size, kernel)
     img.binary([(L_MIN, 100, -128, 127, -128, 127)])
     #img.dilate(1, threshold=10)
     img.erode(2, threshold=1)
+
     return img
 
 def get_sub_image_paramaters():
@@ -644,11 +646,11 @@ while(True):
     keypad.catch_keypad_input()
 
     img = sensor.snapshot()
-    img = image_processing(img)
+    #img = image_processing(img)
 
     #my_way_to_detect_all_sub_image(img)
-    detect_all_sub_image(img)
-    img = print_out_detected_points(img)
+    #detect_all_sub_image(img)
+    #img = print_out_detected_points(img)
 
     #print("FPS %f" % clock.fps())
     gc.mem_free()
