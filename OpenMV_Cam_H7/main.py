@@ -46,9 +46,25 @@ sub_image_number_in_one_axis = 16
 black_color_representation = 10
 white_color_representation = 9
 
-AREA_THRESHOLD = 25
-PIXELS_THRESHOLD = 25
-L_MIN = 49
+#adds = 12
+adds = 5
+AREA_THRESHOLD = 25 + adds
+PIXELS_THRESHOLD = 25 + adds
+L_MIN = 49 - 20
+
+kernel_size = 1 # 3x3==1, 5x5==2, 7x7==3, etc.
+
+kernel = [-2, -1,  0, \
+          -1,  1,  1, \
+           0,  1,  2]
+
+def image_processing(img):
+    img.lens_corr(lens_correct_ratio)
+    img.morph(kernel_size, kernel)
+    img.binary([(L_MIN, 100, -128, 127, -128, 127)])
+    #img.dilate(1, threshold=10)
+    img.erode(2, threshold=1)
+    return img
 
 def get_sub_image_paramaters():
     list_for_y_axis = []
@@ -118,17 +134,20 @@ def print_out_detected_points(an_image):
     global sub_image_center_point_list
     global detected_point_list
 
+    an_image.binary([(255,0,0,0,0,0)])
+
     list_for_y_axis = []
     for yi in range(sub_image_number_in_one_axis):
         list_for_x_axis = []
         for xi in range(sub_image_number_in_one_axis):
             point = sub_image_center_point_list[yi][xi]
             if (detected_point_list[yi * 16 + xi] == black_color_representation):
-                an_image.draw_circle(
-                    point[0], point[1], 3, color=(255, 0, 0), fill=True)  # center_x, center_y
+                pass
+                #an_image.draw_circle(
+                #    point[0], point[1], 3, color=(255, 255, 255), fill=True)  # center_x, center_y
             else:
                 an_image.draw_circle(
-                    point[0], point[1], 3, color=(0, 255, 0), fill=True)  # center_x, center_y
+                    point[0], point[1], 3, color=(0, 0, 0), fill=True)  # center_x, center_y
         list_for_y_axis.append(list_for_x_axis)
 
     return an_image
@@ -227,7 +246,10 @@ def capture_image_data(index_of_image):
     global image_data2
     global image_data3
     global image_data
-    img = sensor.snapshot().lens_corr(lens_correct_ratio)
+
+    img = sensor.snapshot()
+    img = image_processing(img)
+
     detect_all_sub_image(img)
     if (index_of_image == 1):
         image_data1 = detected_point_list
@@ -584,6 +606,7 @@ class Keypad():
             self.state = 0
 
 
+
 keypad = Keypad()
 
 while(True):
@@ -591,9 +614,11 @@ while(True):
 
     keypad.catch_keypad_input()
 
-    img = sensor.snapshot().lens_corr(lens_correct_ratio)
-    #detect_all_sub_image(img)
-    #img = print_out_detected_points(img)
+    img = sensor.snapshot()
+    img = image_processing(img)
+
+    detect_all_sub_image(img)
+    img = print_out_detected_points(img)
 
     #print("FPS %f" % clock.fps())
     gc.mem_free()
