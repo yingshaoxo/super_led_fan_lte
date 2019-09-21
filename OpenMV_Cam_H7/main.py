@@ -128,6 +128,35 @@ def detect_all_sub_image(an_image):
                     true_or_false = black_color_representation
             detected_point_list.append(true_or_false)
 
+def my_way_to_detect_an_sub_image(an_image):
+    width = an_image.width()
+    height = an_image.height()
+    all_pixels = width * height
+    black_pixels = 0
+    for y in range(height):
+        for x in range(width):
+            one_pixel = an_image.get_pixel(x, y)
+            if (one_pixel == (0, 0, 0)):
+                black_pixels += 1
+    if (black_pixels/all_pixels) > 0.25:
+        return 1
+    else:
+        return 0
+
+def my_way_to_detect_all_sub_image(an_image):
+    global sub_image_number_in_one_axis
+    global sub_image_crop_paramater_list
+    global detected_point_list
+
+    detected_point_list = []
+    for yi in range(sub_image_number_in_one_axis):
+        for xi in range(sub_image_number_in_one_axis):
+            crop_paramater = sub_image_crop_paramater_list[yi][xi]
+            sub_image = an_image.copy(roi=crop_paramater)
+            true_or_false = white_color_representation
+            if (my_way_to_detect_an_sub_image(sub_image) == 0):
+                true_or_false = black_color_representation
+            detected_point_list.append(true_or_false)
 
 def print_out_detected_points(an_image):
     global sub_image_number_in_one_axis
@@ -617,6 +646,7 @@ while(True):
     img = sensor.snapshot()
     img = image_processing(img)
 
+    #my_way_to_detect_all_sub_image(img)
     detect_all_sub_image(img)
     img = print_out_detected_points(img)
 
