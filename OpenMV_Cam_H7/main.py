@@ -37,6 +37,7 @@ increase the accuracy:
 1. auto change paramater: by putting a black cycle at the right-bottom corner, you change the paramater automatically to get the preset pixels of that black cycle
 2. get multiple picture, then add or merge them together
 """
+lens_correct_ratio = 2
 width = 96
 height = 128
 #width = 94
@@ -226,7 +227,7 @@ def capture_image_data(index_of_image):
     global image_data2
     global image_data3
     global image_data
-    img = sensor.snapshot().lens_corr(1.8)
+    img = sensor.snapshot().lens_corr(lens_correct_ratio)
     detect_all_sub_image(img)
     if (index_of_image == 1):
         image_data1 = detected_point_list
@@ -590,7 +591,7 @@ while(True):
 
     keypad.catch_keypad_input()
 
-    img = sensor.snapshot().lens_corr(2)
+    img = sensor.snapshot().lens_corr(lens_correct_ratio)
     #detect_all_sub_image(img)
     #img = print_out_detected_points(img)
 
