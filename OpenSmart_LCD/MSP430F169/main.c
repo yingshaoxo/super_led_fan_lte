@@ -29,18 +29,21 @@ int main(void)
     _BIS_SR(GIE); // just enable general interrupt
 }
 
-unsigned int BYTE_YOU_WANT_TO_SEND;
-unsigned int BYTE_FROM_SERIAL;
+unsigned char BYTE_YOU_WANT_TO_SEND;
+unsigned char BYTE_FROM_SERIAL;
+unsigned int a_byte_has_sent = 0;
 #pragma vector=USART1RX_VECTOR
 __interrupt void usart1_rx (void)
 {
     while (!(IFG2 & UTXIFG1));                // USART1 TX buffer ready?
 
     //TXBUF1 = RXBUF1;                          // RXBUF1 to TXBUF1
-    BYTE_FROM_SERIAL = REXBUF1;
+    BYTE_FROM_SERIAL = RXBUF1;
     TXBUF1 = BYTE_YOU_WANT_TO_SEND;
+    a_byte_has_sent = 1;
 }
 
+/*
 unsigned char* hex_string_to_char(const char* hexstr)
 {
     size_t len = strlen(hexstr);
@@ -53,7 +56,15 @@ unsigned char* hex_string_to_char(const char* hexstr)
     chrs[final_len] = '\0';
     return chrs;
 }
+*/
 
-void OpenSmart_write_command() {
-    ;
+//unsigned char a_command_array = {0x7E, 0x04, 0x20, 0xFF, 0xFF, 0xEF};
+void OpenSmart_write_command(unsigned char array[], unsigned int length) {
+    int i;
+    for (i=0; i< length; i++) {
+        a_byte_has_sent = 0;
+        BYTE_YOU_WANT_TO_SEND = array[i];
+        while (a_byte_has_sent == 0);
+    }
+    BYTE_YOU_WANT_TO_SEND = 0xEF;
 }

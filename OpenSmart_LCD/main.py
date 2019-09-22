@@ -55,7 +55,7 @@ def text_to_hex(text):
 
 class SmartOpen_LCD():
     def __init__(self):
-        self.serial = serial.Serial('/dev/ttyUSB0', 115200)  # open serial port
+        self.serial = serial.Serial('/dev/ttyUSB0', 115200, timeout=0.1, write_timeout=0.1)  # open serial port
         print()
         print('-'*20)
         print(self.serial.name)         # check which port was really used
@@ -90,22 +90,21 @@ class SmartOpen_LCD():
     def read_feedback_signal(self):
         bytes_string = ""
         start = 0
-        max_attempts = 5*3
-        while 1:
+        attempts = 6
+        while attempts:
+            attempts -= 1
+            #print(attempts)
             if self.serial.readable():
                 a_byte = self.serial.read(1)
-                byte_string = byte_to_string(a_byte)
-                #print(f"read: {byte_string}")
-                if byte_string == "7E":
-                    start = 1
-                if start == 1:
-                    bytes_string += byte_string
-                    if byte_string == "EF":
-                        return byte_to_string
-            else:
-                max_attempts -= 1
-                if max_attempts < 0:
-                    break
+                if a_byte:
+                    byte_string = byte_to_string(a_byte)
+                    #print(f"read: {byte_string}")
+                    if byte_string == "7E":
+                        start = 1
+                    if start == 1:
+                        bytes_string += byte_string
+                        if byte_string == "EF":
+                            return byte_to_string
 
     def wait_for_command_to_be_executed(self):
         if self.read_feedback_signal() == "7E036F6BEF":
@@ -187,6 +186,7 @@ lcd.set_blacklight(150)
 color = random.choice(list(lcd.color_table.keys()))
 lcd.fill_screen(color)
 
+#"""
 # 80x80 points
 width = 240
 height = 240
@@ -197,6 +197,7 @@ for y in range(16):
         box_x = x * box_length
         box_y = y * box_length
         lcd.draw_rectangle(box_x, box_y, box_length, box_length, color=color)
+#"""
 
 """
 ### write string
@@ -223,6 +224,6 @@ for y in range(height):
 ### change screen color
 while 1:
     for color in color_table.keys():
-    lcd.fill_screen(color)
-    lcd.wait(0.5)
+        lcd.fill_screen(color)
+        lcd.wait(0.5)
 """
