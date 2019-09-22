@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/yingshaoxo/ti/ccs910/ccs/ccs_base/msp430/include",
+                "/home/yingshaoxo/ti/ccs910/ccs/ccs_base/msp430/include_gcc",
+                "/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
