@@ -12,8 +12,8 @@ from time import sleep
 import random
 
 
-DEBUG = False
-#DEBUG = True
+#DEBUG = False
+DEBUG = True
 
 
 def int_to_byte(integer, length=2):
@@ -167,7 +167,6 @@ class SmartOpen_LCD():
             text = text_to_hex(text.ljust(5))
             self.write_command(f"7E0711{text}EF")
 
-
 color_table = {
     "black": "0000",
     "blue": "001f",
@@ -184,9 +183,12 @@ lcd = SmartOpen_LCD()
 # lcd.reset()
 lcd.set_blacklight(150)
 color = random.choice(list(lcd.color_table.keys()))
-lcd.fill_screen(color)
+#lcd.fill_screen(color)
 
-#"""
+lcd.fill_screen(lcd.color_table['white'])
+lcd.draw_rectangle(0, 50, 100, 100, color="black")
+
+"""
 # 80x80 points
 width = 240
 height = 240
@@ -197,7 +199,7 @@ for y in range(16):
         box_x = x * box_length
         box_y = y * box_length
         lcd.draw_rectangle(box_x, box_y, box_length, box_length, color=color)
-#"""
+"""
 
 """
 ### write string

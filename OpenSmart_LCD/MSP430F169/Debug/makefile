@@ -138,7 +138,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 OpenSmartLCDtest.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/bin/cl430" -vmsp --use_hw_mpy=16 --advice:power=all --define=__MSP430F169__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number -z -m"OpenSmartLCDtest.map" --heap_size=80 --stack_size=80 -i"/home/yingshaoxo/ti/ccs910/ccs/ccs_base/msp430/include" -i"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/lib" -i"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="OpenSmartLCDtest_linkInfo.xml" --use_hw_mpy=16 --rom_model -o "OpenSmartLCDtest.out" $(ORDERED_OBJS)
+	"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/bin/cl430" -vmsp --use_hw_mpy=16 --advice:power="all" --define=__MSP430F169__ -g --printf_support=full --diag_warning=225 --diag_wrap=off --display_error_number -z -m"OpenSmartLCDtest.map" --heap_size=80 --stack_size=80 -i"/home/yingshaoxo/ti/ccs910/ccs/ccs_base/msp430/include" -i"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/lib" -i"/home/yingshaoxo/ti/ccs910/ccs/tools/compiler/ti-cgt-msp430_18.12.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="OpenSmartLCDtest_linkInfo.xml" --use_hw_mpy=16 --rom_model -o "OpenSmartLCDtest.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
