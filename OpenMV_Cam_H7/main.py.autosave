@@ -582,6 +582,7 @@ class Keypad():
 
         # send keypad value to remote
         send_signal(11, data=[number, self.state])
+        print(number)
 
         sleep_ms(150)
         #led.off()
