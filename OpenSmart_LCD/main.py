@@ -183,13 +183,11 @@ lcd = SmartOpen_LCD()
 # lcd.reset()
 lcd.set_blacklight(150)
 color = random.choice(list(lcd.color_table.keys()))
-#lcd.fill_screen(color)
+lcd.fill_screen(color)
 
-lcd.fill_screen(lcd.color_table['white'])
-lcd.draw_rectangle(0, 50, 100, 100, color="black")
-
-"""
+#"""
 # 80x80 points
+#an_image[(y * 16) + x]
 width = 240
 height = 240
 box_length = width // 16
@@ -199,7 +197,7 @@ for y in range(16):
         box_x = x * box_length
         box_y = y * box_length
         lcd.draw_rectangle(box_x, box_y, box_length, box_length, color=color)
-"""
+#"""
 
 """
 ### write string

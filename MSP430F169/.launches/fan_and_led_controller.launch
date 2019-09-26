@@ -9,6 +9,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT./home/yingshaoxo/Software_Engineering/super_led_fan_lte/MSP430F169/targetConfigs/MSP430F169.ccxml.TI MSP430 USB1/MSP430" value="fan_and_led_controller"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:fan_and_led_controller}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM./home/yingshaoxo/Codes/super_led_fan/MSP430F169/targetConfigs/MSP430F169.ccxml.TI MSP430 USB1/MSP430" value="/home/yingshaoxo/Codes/super_led_fan/MSP430F169/Debug/fan_and_led_controller.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM./home/yingshaoxo/Software_Engineering/super_led_fan_lte/MSP430F169/targetConfigs/MSP430F169.ccxml.TI MSP430 USB1/MSP430" value="/home/yingshaoxo/Software_Engineering/super_led_fan_lte/MSP430F169/Debug/fan_and_led_controller.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/fan_and_led_controller"/>
 </listAttribute>

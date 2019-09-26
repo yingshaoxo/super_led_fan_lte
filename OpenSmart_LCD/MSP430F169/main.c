@@ -4,6 +4,15 @@
 #include <string.h>
 #include <limits.h> // CHAR_BIT, UCHAR_MAX
 
+
+// ***************
+// ****************
+// SET OpenSmart LCD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// P3.6: TX
+// P3.7: RX
+// ***************
+// ****************
+
 void millisecond_of_delay(unsigned long int t) {
     t = t * 8;
     while (t--) {
@@ -232,6 +241,10 @@ void initialize_OpenSmart_LCD() {
     OpenSmart_write_command_safely(set_blacklight, 5);
 }
 
+void screen_clean() {
+    OpenSmart_fill_LCD_with_white_color();
+}
+
 void print_string(unsigned int x, unsigned int y, unsigned char *string) {
     OpenSmart_print_string(x, y, string);
 }
@@ -266,6 +279,7 @@ int main(void) {
         if (width > 150) {
             width = 0;
             OpenSmart_fill_LCD_with_white_color();
+            OpenSmart_print_string(0, 0, " hello, everyone!");
         }
     }
 }
