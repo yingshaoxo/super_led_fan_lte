@@ -50,9 +50,11 @@ AREA_THRESHOLD = 25
 PIXELS_THRESHOLD = 25
 L_MIN = 49
 
+
 def image_processing(img):
     img.lens_corr(lens_correct_ratio)
     return img
+
 
 def get_sub_image_paramaters():
     list_for_y_axis = []
@@ -138,7 +140,6 @@ def print_out_detected_points(an_image):
     return an_image
 
 
-
 ####################################
 ####################################
 ####################################
@@ -148,7 +149,6 @@ def print_out_detected_points(an_image):
 ####################################
 ####################################
 ####################################
-
 
 uart = UART(3, 115200, timeout=20)  # P4/P5 = TX/RX
 
@@ -205,26 +205,28 @@ Every signal start by `0`, then `signal`, then follow by 257 data.
 def send_idle_state():
     send_int(0)
 
+
 def send_signal(task_number, data=None, picture_index=1):
-    for i in range(300): # back_to_normal
+    for i in range(300):  # back_to_normal
         send_idle_state()
 
     send_int(task_number)
     if (data != None):
         data_length = len(data)
-    for index in range(256): # send 1-256 elements
+    for index in range(256):  # send 1-256 elements
         if ((data != None) and (index < data_length)):
             send_int(data[index])
-            #print(data[index])
+            # print(data[index])
         else:
             send_idle_state()
-    send_int(picture_index) # send 257
+    send_int(picture_index)  # send 257
 
 
 image_data = []
 image_data1 = []
 image_data2 = []
 image_data3 = []
+
 
 def capture_image_data(index_of_image):
     global image_data1
@@ -244,6 +246,7 @@ def capture_image_data(index_of_image):
         image_data3 = detected_point_list
     elif (index_of_image == 0):
         image_data = detected_point_list
+
 
 def send_image_data(index_of_image):
     global image_data1
@@ -290,7 +293,6 @@ class Keypad():
     input_string = ""
     paramater_list = [-1, -1, -1]
     input_level = -1
-
 
     def set_column1_to_0(self):
         self.pin4.value(0)
@@ -496,12 +498,12 @@ class Keypad():
         Cancel: 13
         Enter: 14
         """
-        #led.on()
+        # led.on()
 
-        if (number != 10): # resend
+        if (number != 10):  # resend
             if (number < 10):
                 self.input_string += str(number)
-            elif (number == 14 or number == 15): # confire button
+            elif (number == 14 or number == 15):  # confire button
                 self.input_level += 1
                 try:
                     if (self.input_level == 0):
@@ -525,12 +527,11 @@ class Keypad():
                     self.input_string = ""
                     self.paramater_list = [-1, -1, -1]
                     self.task_number_from_keypad = 0
-            elif (number == 11 or number == 12 or number == 13): # cancle button
+            elif (number == 11 or number == 12 or number == 13):  # cancle button
                 self.input_level = -1
                 self.input_string = ""
                 self.paramater_list = [-1, -1, -1]
                 self.task_number_from_keypad = 0
-
 
         print("number:", number, "state:", self.state, "string:", self.input_string)
         print("task:", self.task_number_from_keypad, "p:", self.paramater_list)
@@ -557,34 +558,40 @@ class Keypad():
             elif (self.paramater_list[0] != -1):
                 send_image_data(1)
 
-        if (self.task_number_from_keypad == 8): # change threshold
+        def update_image(self):
+            capture_image_data(0)  # capture new image
+            send_image_data(0)
+            number = 10
+
+        if (self.task_number_from_keypad == 8):  # change threshold
             if (number == 14 or number == 10):
-                capture_image_data(0) # capture new image
-                send_image_data(0)
+                # capture_image_data(0) # capture new image
+                # send_image_data(0)
+                update_image(self)
             if (number == 7 or number == 9):
-                if (number == 7): # decrese a camera value
+                if (number == 7):  # decrese a camera value
                     PIXELS_THRESHOLD = PIXELS_THRESHOLD - 5
-                elif (number == 9): # increase a camera value
+                elif (number == 9):  # increase a camera value
                     PIXELS_THRESHOLD = PIXELS_THRESHOLD + 5
-                return
+                update_image(self)
             if (number == 4 or number == 6):
                 if (number == 4):
                     AREA_THRESHOLD = AREA_THRESHOLD + 5
                 elif (number == 6):
                     AREA_THRESHOLD = AREA_THRESHOLD - 5
-                return
+                update_image(self)
             if (number == 1 or number == 3):
                 if (number == 1):
                     L_MIN = L_MIN + 5
                 elif (number == 3):
                     L_MIN = L_MIN - 5
-                return
+                update_image(self)
 
         # send keypad value to remote
         send_signal(11, data=[number, self.state])
 
         sleep_ms(150)
-        #led.off()
+        # led.off()
 
         self.state += 1
         if self.state > 255:
@@ -601,7 +608,7 @@ while(True):
     img = sensor.snapshot()
     img = image_processing(img)
 
-    #detect_all_sub_image(img)
+    # detect_all_sub_image(img)
     #img = print_out_detected_points(img)
 
     #print("FPS %f" % clock.fps())

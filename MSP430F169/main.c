@@ -1221,7 +1221,8 @@ void handle_keypad_key(int number) {
             sprintf(text, "%d", number);
             strcat(input_string, text);
             print_string(0, 1, input_string);
-            return; // I don't know if I should add this; problem 1
+
+            //return; // I don't know if I should add this; problem 1
         } else if (number == 14 || number == 15) {
             if (strcmp(input_string, "") == 0) {
                 state = -1;
