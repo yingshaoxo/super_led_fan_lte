@@ -41,6 +41,7 @@ while 1:
     if ser.writable():
         #ser.write(int_to_byte(i))  # write one byte
         ser.write(bytes.fromhex("7e036f6bef"))
+        pass
     if ser.readable():
         a_byte = ser.read(1)  # read one byte
         print(a_byte.hex())
