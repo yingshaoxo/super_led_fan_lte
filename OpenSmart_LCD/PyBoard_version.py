@@ -5,6 +5,11 @@ gmail: yingshaoxo@gmail.com
 ls -l /dev/ttyUSB0
 sudo usermod -a -G uucp yingshaoxo
 sudo chmod a+rw /dev/ttyUSB0
+
+The LED pin in opensmart led needs to be 0V to light,
+
+!!!! Only 2.4 inch screen is tx,rx based !!!!
+!!!! Only 3.5 inch screen uses a Self_Designed wired protocol, not spi, not uart !!!!
 """
 from pyb import UART
 import ubinascii
@@ -45,6 +50,8 @@ def text_to_hex(text):
     result = str(bytes_)
     result = result[2:][:-1]
     return result
+
+
 
 class SmartOpen_LCD():
     def __init__(self):
@@ -154,6 +161,7 @@ class SmartOpen_LCD():
             self.write_command("7E0711{text}EF".format(text=text))
 
 
+
 def main():
     """
     lcd = SmartOpen_LCD()
@@ -164,6 +172,7 @@ def main():
 
     print("done")
     """
+
     lcd = SmartOpen_LCD()
 
     lcd.set_blacklight(150)
@@ -179,8 +188,9 @@ def main():
             box_x = x * box_length
             box_y = y * box_length
             lcd.draw_rectangle(box_x, box_y, box_length, box_length, color=color)
-    
+
     print("done")
+
     """
     lcd = SmartOpen_LCD()
     lcd.set_blacklight(150)
@@ -190,6 +200,7 @@ def main():
             lcd.wait(1)
     """
 
-    
+
+
 if __name__ == '__main__':
     main()

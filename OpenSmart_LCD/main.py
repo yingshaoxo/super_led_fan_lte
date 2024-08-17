@@ -2,9 +2,15 @@
 author: yingshaoxo
 gmail: yingshaoxo@gmail.com
 
+pip3 install pyserial
 ls -l /dev/ttyUSB0
 sudo usermod -a -G uucp yingshaoxo
 sudo chmod a+rw /dev/ttyUSB0
+
+The LED pin in opensmart led needs to be 0V to light,
+
+!!!! Only 2.4 inch screen is tx,rx based !!!!
+!!!! Only 3.5 inch screen uses a Self_Designed wired protocol, not spi, not uart !!!!
 """
 import serial
 import binascii
@@ -56,6 +62,7 @@ def text_to_hex(text):
 class SmartOpen_LCD():
     def __init__(self):
         self.serial = serial.Serial('/dev/ttyUSB0', 115200, timeout=0.1, write_timeout=0.1)  # open serial port
+        print("Bound rate: 115200")
         print()
         print('-'*20)
         print(self.serial.name)         # check which port was really used
@@ -183,7 +190,7 @@ lcd = SmartOpen_LCD()
 # lcd.reset()
 lcd.set_blacklight(150)
 #color = random.choice(list(lcd.color_table.keys()))
-color = lcd.color_table['white']
+color = lcd.color_table['blue']
 lcd.fill_screen(color)
 
 #""
